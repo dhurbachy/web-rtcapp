@@ -84,4 +84,12 @@ export class SignalingGateway
       this.server.to(destSocketId).emit('ice-candidate', data.candidate);
     }
   }
+
+  @SubscribeMessage('end-call')
+  handleEndCall(@MessageBody() data: { to: string }) {
+    const destSocketId = this.users.get(data.to);
+    if (destSocketId) {
+      this.server.to(destSocketId).emit('end-call');
+    }
+  }
 }
